@@ -38,7 +38,13 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
             new ImageItem("second", R.drawable.cur),
             new ImageItem("third", R.drawable.money),
             new ImageItem("fourth", R.drawable.platon),
-            new ImageItem("fifth", R.drawable.samuro)
+            new ImageItem("fifth", R.drawable.samuro),
+            new ImageItem("fifth", R.drawable.ship),
+            new ImageItem("fifth", R.drawable.tree),
+            new ImageItem("fifth", R.drawable.gorila),
+            new ImageItem("fifth", R.drawable.waterfall),
+            new ImageItem("fifth", R.drawable.rino)
+
     };
 
     private void LoadList(){

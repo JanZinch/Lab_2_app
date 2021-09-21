@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
@@ -52,6 +54,15 @@ public class ImageList extends RecyclerView {
             currentDrawable.draw(c);
 
 
+            Paint textPaint = new Paint();
+            textPaint.setAntiAlias(true);
+            textPaint.setColor(Color.WHITE);
+            textPaint.setTextSize(75.0f);
+            textPaint.setStrokeWidth(5.0f);
+            textPaint.setStyle(Paint.Style.STROKE);
+            textPaint.setShadowLayer(5.0f, 10.0f, 10.0f, Color.BLACK);
+            c.drawText(_imagesSource.get(_current).getText(), c.getWidth() * 0.25f + _deltaX, getHeight() * 0.9f + _deltaY, textPaint);
+
 
 
         }
@@ -70,13 +81,38 @@ public class ImageList extends RecyclerView {
         if(swipedRight){
 
             Debug.Log("Right");
+
+            _resources.getDrawable(_imagesSource.get(_current).getImageUri()).setAlpha(255);
+            LikedImagesActivity.likedImages.add(_imagesSource.get(_current));
+
         }
         else{
 
             Debug.Log("Left");
         }
 
-        _current++;
+        try{
+
+            if (_current < _imagesSource.size() - 1){
+
+                _current++;
+            }
+            else {
+
+                _resources.getDrawable(_imagesSource.get(_current).getImageUri()).setAlpha(255);
+                MainActivity.Instance.toLikedList();
+            }
+
+
+        }
+        catch (Exception ex){
+
+            Debug.Log(ex.getMessage());
+        }
+
+
+
+
     }
 
 

@@ -76,8 +76,20 @@ public class ImageTouchHelperCallback extends ItemTouchHelper.Callback {
 
 
 
-
     @Override
+    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        Debug.Log("SWIPE: " + ItemTouchHelper.END);
+        _adapter.OnImageDismiss(viewHolder.getAdapterPosition());
+
+
+        _recycler.next(direction == ItemTouchHelper.END);
+
+    }
+
+
+
+    /*@Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
 
         Debug.Log("SWIPE: " + i);
@@ -86,7 +98,7 @@ public class ImageTouchHelperCallback extends ItemTouchHelper.Callback {
 
         _recycler.next(i == 32);
 
-    }
+    }*/
 
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {

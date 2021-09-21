@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,8 +20,9 @@ import android.view.SurfaceView;
 
 public class MainActivity extends AppCompatActivity implements OnStartDragListener {
 
+    public static MainActivity Instance = null;
+
     private ItemTouchHelper _itemTouchHelper = null;
-    private final int _spanCount = 4;
 
     private ImageList _recyclerView = null;
     private RecyclerView.LayoutManager _layoutManager = null;
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
         setContentView(R.layout.activity_main);
         //setContentView(new DrawView(this));
 
+        Instance = this;
+
         try{
 
 
@@ -90,6 +94,25 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
 
         _itemTouchHelper.startDrag(viewHolder);
     }
+
+    public void toLikedList(){
+
+        try{
+
+            Debug.Log("INP");
+
+            startActivity(new Intent(MainActivity.this, LikedImagesActivity.class));
+            //Debug.Log("Success!");
+        }
+        catch (Exception ex){
+
+            Debug.Log(ex.getMessage());
+        }
+
+
+
+    }
+
 
 
     class DrawView extends SurfaceView implements SurfaceHolder.Callback {
