@@ -1,7 +1,6 @@
 package com.ivan.lab_2_app;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,62 +11,73 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.TextView;
-
-import java.security.spec.ECField;
 
 public class MainActivity extends AppCompatActivity implements OnStartDragListener {
 
     private ItemTouchHelper _itemTouchHelper = null;
     private final int _spanCount = 4;
 
-    private RecyclerView _recyclerView = null;
+    private ImageList _recyclerView = null;
     private RecyclerView.LayoutManager _layoutManager = null;
 
     private ImageListAdapter _adapter = null;
     private ItemTouchHelper.Callback _callback = null;
 
+    private RecyclerView.ItemDecoration _itemDecoration = null;
 
     protected void Load(){
 
         _adapter = new ImageListAdapter(this);
 
-        _recyclerView = (RecyclerView) findViewById(R.id.recycler_list);
+        _recyclerView = findViewById(R.id.recycler_list);
+        //_recyclerView = new RecyclerView(this, )
+
+        _recyclerView.Init(ImageListAdapter._images, getResources());
+
         _recyclerView.setHasFixedSize(true);
         _recyclerView.setAdapter(_adapter);
 
-        _layoutManager = new LinearLayoutManager(this);
+        _layoutManager = new LinearLayoutManager(this){
+
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+
         _recyclerView.setLayoutManager(_layoutManager);
 
-        _callback = new ImageTouchHelperCallback(_adapter);
+        _callback = new ImageTouchHelperCallback(_recyclerView, _adapter);
         _itemTouchHelper = new ItemTouchHelper(_callback);
         _itemTouchHelper.attachToRecyclerView(_recyclerView);
+
+        _itemDecoration = new ImageListDecoration();
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        setContentView(new DrawView(this));
+
+        setContentView(R.layout.activity_main);
+        //setContentView(new DrawView(this));
 
         try{
 
 
 
-            //Load();
+            Load();
         }
         catch (Exception ex){
 
             Debug.Log(ex.getMessage());
         }
+
 
 
 
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            drawThread = new DrawThread(getHolder(), this.getResources());
+            drawThread = new DrawThread(getHolder(), this.getResources(), _recyclerView);
             drawThread.setRunning(true);
             drawThread.start();
         }
@@ -122,10 +132,13 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
             private boolean running = false;
             private SurfaceHolder surfaceHolder;
             private Resources resources = null;
+            private RecyclerView recyclerListView = null;
 
-            public DrawThread(SurfaceHolder surfaceHolder, Resources resources) {
+
+            public DrawThread(SurfaceHolder surfaceHolder, Resources resources, RecyclerView recyclerView) {
                 this.surfaceHolder = surfaceHolder;
                 this.resources = resources;
+                this.recyclerListView = recyclerView;
             }
 
             public void setRunning(boolean running) {
@@ -161,11 +174,16 @@ public class MainActivity extends AppCompatActivity implements OnStartDragListen
 
                 try{
 
+
+
                     Bitmap image = BitmapFactory.decodeResource(resources, R.drawable.actin);
                     //canvas.drawBitmap(image, canvas.getWidth() * 0.25f, getHeight() * 0.5f, textPaint);
                     Rect srcrect = new Rect(0, 0, image.getWidth(), image.getHeight());
                     Rect outrect = new Rect(0,0, 800, 600);
                     canvas.drawBitmap(image, srcrect, outrect, textPaint);
+
+                    recyclerListView = (RecyclerView) findViewById(R.id.recycler_list);
+                    recyclerListView.draw(canvas);
 
                 }
                 catch (Exception ex){

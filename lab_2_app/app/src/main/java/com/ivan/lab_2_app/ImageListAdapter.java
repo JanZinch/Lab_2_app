@@ -32,9 +32,9 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
 
     private static final List<ImageItem> _imagesSource = new ArrayList<ImageItem>();
 
-    private static ImageItem[] _images = new ImageItem[]{
+    public static ImageItem[] _images = new ImageItem[]{
 
-            new ImageItem("first", R.drawable.actin),
+            new ImageItem("first",  R.drawable.actin),
             new ImageItem("second", R.drawable.cur),
             new ImageItem("third", R.drawable.money),
             new ImageItem("fourth", R.drawable.platon),
@@ -48,6 +48,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
 
 
     public ImageListAdapter(OnStartDragListener startDragListener){
+
 
         LoadList();
         this.startDragListener = startDragListener;
@@ -66,10 +67,10 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, int position) {
 
-        holder.textView.setText(_imagesSource.get(position).getText());
+        //holder.textView.setText(_imagesSource.get(position).getText());
 
 
-        holder.imageView.setImageResource(_imagesSource.get(position).getImageUri());
+        //holder.imageView.setImageResource(_imagesSource.get(position).getImageUri());
 
         holder.imageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -97,9 +98,9 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Imag
     @Override
     public void OnImageMove(int fromPosition, int toPosition) {
 
-        //String prev = _tilesList.remove(fromPosition);
-        //_tilesList.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
-        //notifyItemMoved(fromPosition, toPosition);
+        ImageItem prev = _imagesSource.remove(fromPosition);
+        _imagesSource.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
 
 
     }

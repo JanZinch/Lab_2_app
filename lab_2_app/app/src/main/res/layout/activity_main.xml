@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.ivan.lab_2_app.ImageList
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -15,12 +15,12 @@
 
         android:id = "@+id/recycler_list"
         android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
 
         >
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </com.ivan.lab_2_app.ImageList>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
